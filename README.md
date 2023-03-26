@@ -4,11 +4,12 @@ Sistema de gerenciamento de cursos, com autenticação de usuários e administra
 ---
 
 ### Como executar
-1. Abra um terminal na pasta `api` e execute os seguintes comandos:
+1. Baixe e instale o [Node.js](https://nodejs.org/).
+2. Abra um terminal na pasta `api` e execute os seguintes comandos:
     1. `npm install`, na primeira execução, para instalar os módulos necessários.
     2. `npm run start`, para iniciar a API.
         1. A porta da API é por padrão definida como `4000`. Para alterar, mude a chave `PORT` no arquivo `.env` (chave padrão: `PORT=4000`).
-2. Abra outro terminal na pasta `mind-courses` e execute os seguintes comandos:
+3. Abra outro terminal na pasta `mind-courses` e execute os seguintes comandos:
     1. `npm install`, na primeira execução, para instalar os módulos necessários.
     2. `npm run start`, para iniciar a aplicação React.
         1. Se a porta da API foi alterada, será necessário alterar a URL na aplicação também. No arquivo `.env`, altere a chave `REACT_APP_API` (chave padrão: `REACT_APP_API=http://localhost:4000`).
