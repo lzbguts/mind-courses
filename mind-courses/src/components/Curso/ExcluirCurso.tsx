@@ -18,7 +18,7 @@ const ExcluirCurso = ({ id } : any) => {
 
         const data = await req.json();
 
-        if(!data.status) navigate("/dashboard");
+        if(!data.status) navigate("/admin");
     }
 
     return (

@@ -8,7 +8,7 @@ body {
 }
 
 .main {
-    min-height: 100vh;
+    min-height: 80vh;
     margin-top: 2em;
     margin-bottom: 2em;
 }
@@ -240,14 +240,14 @@ h1 {
 
 .form-control {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     gap: 1em;
 }
 
-.form-control input[type='text'], select {
+.form-control input[type='text'], input[type='email'], input[type='password'], select {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     border: 1px solid #111;
     border-radius: 15px;
     padding: 10px;
@@ -295,9 +295,7 @@ h1 {
     width: 100%;
     border: 1px solid #111;
     border-radius: 15px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    padding: 0 15px
 }
 
 .search {
@@ -317,4 +315,63 @@ h1 {
 .search svg {
     width: 1.5em;
     height: 1.5em;
+}
+
+.home-banner {
+    display: flex;
+    width: 50vw;
+}
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+}
+
+.banner-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 80vh;
+    background: url("../public/assets/home-banner.png");
+}
+
+.banner-1 h1, .banner-1 p {
+    background-color: white;
+    padding: 1.3em;
+    border: 1px solid #111;
+    border-radius: 20px;
+}
+
+.home-button {
+    width: 10em !important;
+}
+
+.imgInput {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.imgInputLabel {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #111;
+    border-radius: 15px;
+    padding: 10px;
+    width: 30vh;
+    transition: 0.5s;
+}
+
+.imgInputLabel:hover {
+    background-color: #111;
+    color: white;
+    cursor: pointer;
 }

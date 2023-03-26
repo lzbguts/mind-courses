@@ -53,7 +53,7 @@ class Curso {
                 });
             }
 
-            const data = await aaSqlite.get_all(`SELECT * FROM Cursos WHERE idUsuario = ${user.id}`);
+            const data = await aaSqlite.get_all(`SELECT * FROM Cursos WHERE idUsuario = ${user.id} AND situacao = 1`);
 
             return res.json(data);
         } catch (error) {
@@ -108,11 +108,13 @@ class Curso {
                 message: "Curso já cadastrado."
             });
 
-            await aaSqlite.push(`INSERT INTO Cursos (idUsuario, nome, professor, categoria, descricao, imagem) VALUES (${user.id}, '${nome}', '${professor}', '${categoria}', '${descricao}', '${imagem}')`);
+            await aaSqlite.push(`INSERT INTO Cursos (idUsuario, nome, professor, categoria, descricao) VALUES (${user.id}, '${nome}', '${professor}', '${categoria}', '${descricao}')`);
+            const last = await aaSqlite.get("SELECT max(id) from Cursos");
 
             return res.json({
                 status: 0,
-                message: "Curso cadastrado com sucesso."
+                message: "Curso cadastrado com sucesso.",
+                id: last["max(id)"] || 1
             });
         } catch (error) {
             return res.status(500).json({
@@ -123,7 +125,7 @@ class Curso {
     }
 
     async updateCurso(req: Request, res: Response) {
-        const { token, id, nome, professor, categoria, descricao, imagem } = req.body;
+        const { token, id, nome, professor, categoria, descricao, imagem, situacao } = req.body;
 
         try {
             const user = await Curso.verify(token);
@@ -145,7 +147,7 @@ class Curso {
                 message: "Não autorizado."
             });
 
-            await aaSqlite.push(`UPDATE Cursos SET nome = '${nome}', professor = '${professor}', categoria = '${categoria}', descricao = '${descricao}', imagem = '${imagem}' WHERE id = ${id}`);
+            await aaSqlite.push(`UPDATE Cursos SET nome = '${nome}', professor = '${professor}', categoria = '${categoria}', descricao = '${descricao}', situacao = ${situacao} WHERE id = ${id}`);
 
             return res.json({ message: "Curso atualizado com sucesso." });
         } catch (error) {

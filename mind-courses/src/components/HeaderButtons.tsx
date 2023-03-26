@@ -6,10 +6,9 @@ const HeaderButtons = ({ logado, nivel } : any) => {
     const handleSignOut = () => {
         localStorage.removeItem("token");
         navigate(0);
-        
     }
 
-    if(!logado) {
+    if(!logado || nivel === 0) {
         return (
             <>
                 <Link to="/signIn">Entrar</Link>

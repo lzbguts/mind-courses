@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import FormNovo from "../components/Curso/FormNovo";
 import ExcluirCurso from "../components/Curso/ExcluirCurso";
 import FormEditar from "../components/Curso/FormEditar";
+import NotFound from "./NotFound";
 
 const Curso = () => {
     const params = useParams();
@@ -13,7 +14,7 @@ const Curso = () => {
 
     if(id === "novo") action = "novo"
 
-    const [curso, setCurso] = useState({ idUsuario: 0, nome: "", professor: "", categoria: "", descricao: "", imagem: "" })
+    const [curso, setCurso] = useState({ idUsuario: 0, nome: "", professor: "", categoria: "", descricao: "" })
 
     const API = process.env.REACT_APP_API || "http://localhost:4000";
 
@@ -40,7 +41,7 @@ const Curso = () => {
     }, [API, action, curso, id]);
 
     if(!curso) {
-        return <p>Erro.</p>
+        return <NotFound />
     }
 
     if(action) {
@@ -57,7 +58,7 @@ const Curso = () => {
                 <h1 className="dashboard-title">{curso.nome}</h1>
                 <div className="curso-container">
                     <div className="curso-view">
-                        <img src={`/assets/courses/${curso.imagem}`} alt="imagem" />
+                        <img src={localStorage.getItem(id as any) || "/assets/no-image.png"} alt="imagem" />
                         <div className="curso-view-desc">
                             <p>Professor: {curso.professor}</p>
                             <p>Categoria: {curso.categoria}</p>

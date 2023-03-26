@@ -4,6 +4,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Dashboard from "./Dashboard";
 import Curso from "./Curso";
+import NotFound from "./NotFound";
 
 export {
     Home,
@@ -11,5 +12,6 @@ export {
     SignUp,
     Admin,
     Dashboard,
-    Curso
+    Curso,
+    NotFound
 }
