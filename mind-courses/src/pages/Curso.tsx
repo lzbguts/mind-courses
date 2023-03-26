@@ -14,7 +14,7 @@ const Curso = () => {
 
     if(id === "novo") action = "novo"
 
-    const [curso, setCurso] = useState({ idUsuario: 0, nome: "", professor: "", categoria: "", descricao: "" })
+    const [curso, setCurso] = useState({ idUsuario: 0, nome: "", professor: "", categoria: "", descricao: "", imagem: "" })
 
     const API = process.env.REACT_APP_API || "http://localhost:4000";
 
@@ -58,9 +58,9 @@ const Curso = () => {
                 <h1 className="dashboard-title">{curso.nome}</h1>
                 <div className="curso-container">
                     <div className="curso-view">
-                        <img src={localStorage.getItem(id as any) || "/assets/no-image.png"} alt="imagem" />
+                        <img src={curso.imagem} alt="imagem" />
                         <div className="curso-view-desc">
-                            <p>Professor: {curso.professor}</p>
+                            <p>Professor(a): {curso.professor}</p>
                             <p>Categoria: {curso.categoria}</p>
                             <p>Descrição: {curso.descricao}</p>
                         </div>

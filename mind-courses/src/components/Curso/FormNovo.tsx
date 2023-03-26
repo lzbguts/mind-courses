@@ -7,10 +7,28 @@ const FormNovo = () => {
     const [professor, setProfessor] = useState("");
     const [categoria, setCategoria] = useState("");
     const [descricao, setDescricao] = useState("");
+    const [imagem, setImagem] = useState("/assets/no-image.png");
     const [message, setMessage] = useState({ status: -1, texto: "" });
     const navigate = useNavigate();
 
     const API = process.env.REACT_APP_API || "http://localhost:4000";
+
+    const getImagem = async (obj: any) => {
+        return new Promise(
+            (resolve, reject) => {
+                if(obj.files[0]) {
+                    const reader = new FileReader();
+        
+                    reader.readAsDataURL(obj.files[0] as any);
+        
+                    reader.addEventListener('load', () => {
+                        resolve(reader.result);
+                    });
+                }
+                else resolve("/assets/no-image.png")
+            }
+        )
+    }
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -22,7 +40,7 @@ const FormNovo = () => {
                 texto: "Imagem: Formato inválido."
             });
             return;
-        }
+        }   
 
         const dados = {
             "token": localStorage.getItem("token"),
@@ -30,38 +48,24 @@ const FormNovo = () => {
             "professor": professor,
             "categoria": categoria,
             "descricao": descricao,
+            "imagem": await getImagem(obj)
         }
 
-        fetch(`${API}/courses/new`, {
+        const req = await fetch(`${API}/courses/new`, {
             method: "POST",
             body: JSON.stringify(dados),
             headers: {
                 "Content-Type": "application/json"
             }
         })
-        .then(async (req) => {
-            const data = await req.json();
 
-            setMessage({
-                status: data.status,
-                texto: data.message
-            });
-    
-            if(!obj.files[0]) {
-                localStorage.setItem(data.id.toString(), "/assets/no-image.png");
-                navigate(`/curso/${data.id}`);
-                return;
-            }
+        const data = await req.json();
 
-            const reader = new FileReader();
+        if(data.status === 0) navigate(`/curso/${data.id}`);
 
-            reader.readAsDataURL(obj.files[0] as any);
-
-            reader.addEventListener('load', () => {
-                localStorage.setItem(data.id.toString(), reader.result as any);
-            });
-
-            navigate(`/curso/${data.id}`);
+        setMessage({
+            status: data.status,
+            texto: data.message
         });
     }
 
@@ -84,7 +88,7 @@ const FormNovo = () => {
                             <input type="text" name="nome" id="nome" placeholder="Insira o nome do curso." required onChange={(e) => setNome(e.target.value)} />
                         </div>
                         <div className="form-control">
-                            <label htmlFor="professor">Professor:</label>
+                            <label htmlFor="professor">Professor(a):</label>
                             <input type="text" name="professor" id="professor" placeholder="Insira o professor do curso." required onChange={(e) => setProfessor(e.target.value)} />
                         </div>
                         <div className="form-control">

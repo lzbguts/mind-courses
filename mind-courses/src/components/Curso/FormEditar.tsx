@@ -7,6 +7,7 @@ const FormEditar = ({ id } : any) => {
     const [professor, setProfessor] = useState("");
     const [categoria, setCategoria] = useState("");
     const [descricao, setDescricao] = useState("");
+    const [imagem, setImagem] = useState("");
     const [situacao, setSituacao] = useState(1);
     const [message, setMessage] = useState({ status: -1, texto: "" });
     const navigate = useNavigate();
@@ -30,11 +31,29 @@ const FormEditar = ({ id } : any) => {
             setProfessor(data.professor);
             setCategoria(data.categoria);
             setDescricao(data.descricao);
+            setImagem(data.imagem);
             setSituacao(data.situacao);
         }
 
         getCurso().catch((err) => console.log(err));
     }, [API, id]);
+
+    const getImagem = async (obj: any) => {
+        return new Promise(
+            (resolve, reject) => {
+                if(obj.files[0]) {
+                    const reader = new FileReader();
+        
+                    reader.readAsDataURL(obj.files[0] as any);
+        
+                    reader.addEventListener('load', () => {
+                        resolve(reader.result);
+                    });
+                }
+                else resolve(imagem);
+            }
+        )
+    }
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -55,35 +74,25 @@ const FormEditar = ({ id } : any) => {
             "professor": professor,
             "categoria": categoria,
             "descricao": descricao,
+            "imagem": await getImagem(obj),
             "situacao": situacao
         }
 
-        fetch(`${API}/courses/edit`, {
+        const req = await fetch(`${API}/courses/edit`, {
             method: "POST",
             body: JSON.stringify(dados),
             headers: {
                 "Content-Type": "application/json"
             }
-        })
-        .then(async (req) => {
-            const data = await req.json();
+        });
 
-            setMessage({
-                status: data.status,
-                texto: data.message
-            });
+        const data = await req.json();
 
-            if(!obj.files[0]) return;
+        if(data.status === 0) navigate(`/curso/${data.id}`);
 
-            const reader = new FileReader();
-
-            reader.readAsDataURL(obj.files[0] as any);
-
-            reader.addEventListener('load', () => {
-                localStorage.setItem(id.toString(), reader.result as any);
-            });
-
-            navigate(`/curso/${id}`);
+        setMessage({
+            status: data.status,
+            texto: data.message
         });
     }
 
@@ -99,14 +108,14 @@ const FormEditar = ({ id } : any) => {
             <h1 className="dashboard-title">Editar curso</h1>
             <div className="curso-container">
                 <form onSubmit={handleSubmit} className="form-container">
-                    <img src={localStorage.getItem(id as any) || "/assets/no-image.png"} alt="" id="imgCurso" />
+                    <img src={imagem} alt="" id="imgCurso" />
                     <div className="form-group">
                         <div className="form-control">
                             <label htmlFor="nome">Nome:</label>
                             <input type="text" name="nome" id="nome" placeholder="Insira o nome do curso." required value={nome} onChange={(e) => setNome(e.target.value)} />
                         </div>
                         <div className="form-control">
-                            <label htmlFor="professor">Professor:</label>
+                            <label htmlFor="professor">Professor(a):</label>
                             <input type="text" name="professor" id="professor" placeholder="Insira o professor do curso." required value={professor} onChange={(e) => setProfessor(e.target.value)} />
                         </div>
                         <div className="form-control">

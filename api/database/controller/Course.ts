@@ -108,7 +108,7 @@ class Curso {
                 message: "Curso já cadastrado."
             });
 
-            await aaSqlite.push(`INSERT INTO Cursos (idUsuario, nome, professor, categoria, descricao) VALUES (${user.id}, '${nome}', '${professor}', '${categoria}', '${descricao}')`);
+            await aaSqlite.push(`INSERT INTO Cursos (idUsuario, nome, professor, categoria, descricao, imagem) VALUES (${user.id}, '${nome}', '${professor}', '${categoria}', '${descricao}', '${imagem}')`);
             const last = await aaSqlite.get("SELECT max(id) from Cursos");
 
             return res.json({
@@ -147,9 +147,9 @@ class Curso {
                 message: "Não autorizado."
             });
 
-            await aaSqlite.push(`UPDATE Cursos SET nome = '${nome}', professor = '${professor}', categoria = '${categoria}', descricao = '${descricao}', situacao = ${situacao} WHERE id = ${id}`);
+            await aaSqlite.push(`UPDATE Cursos SET nome = '${nome}', professor = '${professor}', categoria = '${categoria}', descricao = '${descricao}', imagem = '${imagem}', situacao = ${situacao} WHERE id = ${id}`);
 
-            return res.json({ message: "Curso atualizado com sucesso." });
+            return res.json({ status: 0, message: "Curso atualizado com sucesso." });
         } catch (error) {
             return res.status(500).json({
                 error: "Erro no servidor.",
