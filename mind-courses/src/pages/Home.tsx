@@ -1,8 +1,10 @@
 const Home = () => {
+    document.title = "Home - Mind Courses";
+
     return (
-        <div>
+        <>
             <p>Home View</p>
-        </div>
+        </>
     );
 }
 
