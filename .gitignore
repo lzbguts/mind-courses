@@ -1,5 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
 /api/node_modules
+/api/mind.sqlite3
+
 /mind-courses/node_modules
